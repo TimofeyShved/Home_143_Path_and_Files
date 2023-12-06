@@ -2,9 +2,10 @@ package com.company;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.*;
 import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.*;
+import java.util.*;
 
 public class Main {
 
@@ -51,5 +52,25 @@ public class Main {
 
         //удалить
         Files.deleteIfExists(Paths.get("text3.txt"));
+
+        // Прочитать файл в массив байтов
+        byte[] bytes = Files.readAllBytes(path);
+        for (int i=0; i<bytes.length; i++){
+            System.out.println(bytes[i]);
+        }
+
+        //Записать в файл
+        Files.write(path, "text\ntext\n".getBytes(), StandardOpenOption.APPEND);
+
+        //Считать в Лист
+        List<String> list = Files.readAllLines(path);
+        for (String s: list){
+            System.out.println(s);
+        }
+        //Добавим в него новую строчку и перезапишем файл
+        list.add("new text");
+        list.add("new text 2");
+        Files.write(path, list);
+        
     }
 }
