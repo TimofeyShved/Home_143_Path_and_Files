@@ -19,12 +19,14 @@ public class Main {
         // Но это было очень неудобно, так как мало функционала
         // Поэтому в 7 джаве добавили Path и Files
 
-        // Path и его возможности:
+        // -------------------------------------------------- Path и его возможности -------------------
+        // ----------------- Получить файл
         Path path = Paths.get("text.txt").toAbsolutePath();
-        // Или через файл
+        // Или через файл по старинке
         //File file = new File("Text.txt");
-        //path = file.toPath();
+        //Path path = file.toPath();
 
+        // ---------------- атрибуты и имена
         // Например, можно узнать (имя файла/путь к папке/начальная точка/полный путь)
         System.out.println(path.getFileName());
         System.out.println(path.getParent());
@@ -44,12 +46,11 @@ public class Main {
         // PosixFileAttributes posixFileAttributes = Files.readAttributes(path, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
 
 
+        // ----------------- Изменить файл
         //копирование
         Files.copy(path, Paths.get("text2.txt"), StandardCopyOption.REPLACE_EXISTING);
-
         //переименовать
         Files.move(Paths.get("text2.txt"), Paths.get("text3.txt"), StandardCopyOption.REPLACE_EXISTING);
-
         //удалить
         Files.deleteIfExists(Paths.get("text3.txt"));
 
@@ -71,6 +72,23 @@ public class Main {
         list.add("new text");
         list.add("new text 2");
         Files.write(path, list);
-        
+
+        // ----------------- соседние файлы (в нашей папке)
+        System.out.println("способ 1");
+        try(DirectoryStream<Path> enteries = Files.newDirectoryStream(Paths.get("."))) {
+            for (Path p:enteries){
+                System.out.println(p);
+            }
+        }
+        System.out.println("способ 2");
+        Files.walkFileTree(Paths.get("."), new HashSet<FileVisitOption>(), 1, new MyFileVisitor());
+    }
+}
+
+class MyFileVisitor extends SimpleFileVisitor<Path>{
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs){
+        System.out.println(file.getFileName());
+        return FileVisitResult.CONTINUE;
     }
 }
