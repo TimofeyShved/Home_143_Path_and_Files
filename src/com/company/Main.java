@@ -1,7 +1,6 @@
 package com.company;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.*;
 import java.nio.file.*;
 import java.nio.file.attribute.*;
@@ -72,6 +71,19 @@ public class Main {
         list.add("new text");
         list.add("new text 2");
         Files.write(path, list);
+
+        /**
+        // Scanner и PrintWriter (Альтернативная запись и чтение файла)
+        try(Scanner scanner = new Scanner(new FileReader("text.txt"))){
+            while (scanner.hasNext()){
+                System.out.println(scanner.next());
+            }
+        }
+
+        try(PrintWriter writer = new PrintWriter(new FileWriter("text.txt"))){
+            writer.write("Scanner и PrintWriter");
+        }
+         **/
 
         // ----------------- соседние файлы (в нашей папке)
         System.out.println("способ 1");
